@@ -70,4 +70,4 @@ const WriteArticle = () => {
   )
 }
 
-export default WriteArticle
+export default WriteArticle 
