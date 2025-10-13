@@ -54,13 +54,17 @@ const Community = () => {
    },[user])
 
   return (
-    <div className='flex-1 h-full flex flex-col gap-4 p-6'>
+     <div className='flex-1 h-full flex flex-col gap-4 p-6'>
       <h2 className='text-xl font-semibold'>Creations</h2>
-            <div className='bg-white h-full w-full rounded-xl overflow-y-scroll flex flex-wrap gap-4'>
+      
+            <div className='bg-white h-full w-full rounded-xl overflow-y-scroll flex flex-wrap gap-4 '>
               {loading ? (
-                <p className='text-gray-500'>loading...</p>
+                <div className='flex flex-col items-center justify-center w-full py-20'>
+              <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className='text-gray-500 text-lg font-medium'>loading creations....</p>
+                </div>
               ) : creations.length === 0 ? (
-                <p className='text-gray-500'>No creation found.</p>
+                <p className='text-gray-500 text-center w-full py-20'>No creation found.</p>
               ):(
                 creations.map((creation, index)=> (
                 <div key={index} className='relative group inline-block pl-3 pt-3 w-full sm:w-1/2 lg:w-1/3'>
@@ -79,7 +83,10 @@ const Community = () => {
               )}
         
        </div>
-    </div>
+    </div> 
+      
+     
+    
   )
 }
 
