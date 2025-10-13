@@ -4,7 +4,13 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
-import pdf from 'pdf-parse/lib/pdf-parse.js'
+
+
+//import pdf from "pdf-parse/lib/pdf-parse.js"
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const pdf = require("pdf-parse");
+
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -144,7 +150,7 @@ export const generateImage = async (req, res)=> {
 export const removeImageBackground = async (req, res)=> {
     try {
         const { userId } = req.auth();
-        const { image } = req.file;
+        const  image  = req.file;
         const plan = req.plan;
         
         //(only for premium)const free_usages = req.free_usages;
@@ -163,7 +169,7 @@ export const removeImageBackground = async (req, res)=> {
         }) 
 
         await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (
-        ${userId}, "Remove background from image" , ${secure_url}, 'image')`;
+        ${userId}, ${'Remove background from image'} , ${secure_url}, 'image')`;
         
         
         res.json({success: true, content: secure_url})
@@ -178,7 +184,7 @@ export const removeImageObject = async (req, res)=> {
     try {
         const { userId } = req.auth();
         const { object } = req.body;
-        const { image } = req.file;
+        const  image  = req.file;
         const plan = req.plan;
         
         if(plan !== 'premium'){
