@@ -11,7 +11,25 @@ const app = express()
 
 await connectCloudinary()
 
-app.use(cors())
+const allowedOrigins = [
+  'https://quick-ai-ashy-alpha.vercel.app', // your frontend
+  'http://localhost:5173' // local dev
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // needed if you use cookies/auth
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
 app.use(express.json())
 app.use(clerkMiddleware())
 
