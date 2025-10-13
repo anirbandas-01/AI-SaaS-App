@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white"/>
-  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Neon-00FF00?style=for-the-badge&logo=data:image/svg+xml;base64,..."/>
   <img src="https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white"/>
 </p>
 
@@ -110,4 +110,4 @@ npm run dev
 3.Commit changes (git commit -m "Add feature")
 4.Push branch (git push origin feature/YourFeature)
 5.Open a Pull Request
-<h3 align="center">✨ Built with ❤️ by <a href="https://github.com/anirbandas-01">Anirban Das</a> ✨</h3> ```
+<h3 align="center">✨ Built with ❤️ by <a href="https://github.com/anirbandas-01">Anirban Das</a> ✨</h3>
