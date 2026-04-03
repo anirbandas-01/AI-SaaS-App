@@ -1,113 +1,218 @@
-<h1 align="center">⚡ AI-SaaS-App ⚡</h1>
+# ⚡ QuickAI — AI-Powered Content Creation Platform
 
-<p align="center">
-  <b>An AI-powered SaaS platform</b> 💡<br>
-  Leverage AI for text, images, and more — right in your browser!
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
-  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Neon-00FF00?style=for-the-badge&logo=data:image/svg+xml;base64,..."/>
-  <img src="https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white"/>
-</p>
-
-<p align="center">
-  🚀 <a href="https://quick-ai-ashy-alpha.vercel.app">Live Demo</a> •
-  📘 <a href="https://github.com/anirbandas-01/AI-SaaS-App">Source Code</a> •
-  💬 <a href="#contributing">Contribute</a>
-</p>
+> Transform your content creation workflow with a suite of premium AI tools. Write articles, generate images, review resumes, and enhance visuals — all in one place.
 
 ---
 
-## ✨ Features
+## 🚀 Features
 
-✅ Modern React + Tailwind CSS UI  
-✅ AI-powered text & image generation (OpenAI API)  
-✅ User authentication & role-based access  
-✅ Cloud image storage with Cloudinary  
-✅ Subscription & payment management (Stripe)  
-✅ Real-time notifications  
-✅ Fully responsive design  
-
----
-
-## 🧠 Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React, Tailwind CSS, Axios |
-| **Backend** | Node.js, Express.js |
-| **Database** | PostgreSQL (Neon) |
-| **AI Integration** | OpenAI API |
-| **Cloud Services** | Cloudinary |
-| **Auth** | Clerk / JWT |
-| **Deployment** | Render (Server), Vercel (Client) |
+| Feature | Description | Plan |
+|---|---|---|
+| ✍️ Write Article | Generate full-length articles with customizable length | Free |
+| #️⃣ Blog Titles | AI-generated blog title ideas by category | Free |
+| 🖼️ Generate Images | Text-to-image generation with style options | Premium |
+| 🧹 Remove Background | One-click AI background removal from images | Premium |
+| ✂️ Remove Object | Remove specific objects from images using AI | Premium |
+| 📄 Review Resume | Upload a PDF resume and get AI-powered feedback | Premium |
+| 🌐 Community | Browse and like publicly shared AI-generated images | All Users |
 
 ---
 
-## 🔧 Environment Variables
+## 🛠️ Tech Stack
 
-Create a `.env` file in both `/server` and `/client` directories. Example:
+### Frontend
+- **React** + **Vite** — Fast, modern frontend
+- **Tailwind CSS** — Utility-first styling
+- **React Router DOM** — Client-side routing
+- **Clerk** — Authentication & subscription management
+- **Axios** — HTTP client
+- **React Hot Toast** — Notifications
+- **React Markdown** — Markdown rendering
+- **Lucide React** — Icons
 
-```env
-# Server
-PORT=9090DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<dbname>
-OPENAI_API_KEY=your_openai_key
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_secret
-STRIPE_SECRET_KEY=your_stripe_secret
-CORS_ORIGIN=http://localhost:5173
+### Backend
+- **Node.js** + **Express** — REST API server
+- **Clerk Express SDK** — JWT auth middleware & user management
+- **Neon (PostgreSQL)** — Serverless database for storing user creations
+- **Cloudinary** — Image storage, background removal & object removal
+- **Multer** — File upload handling
+- **OpenAI SDK (Gemini)** — AI text generation via Google's Gemini 2.0 Flash
+- **Clipdrop API** — Text-to-image generation
+- **pdf-parse** — PDF text extraction for resume review
 
-# Client
-VITE_API_URL=http://localhost:9090
+---
+
+## 🔐 Authentication System
+
+QuickAI uses **Clerk** for full-stack authentication and subscription management:
+
+- **Sign In / Sign Up** — Handled entirely by Clerk's pre-built UI components
+- **JWT Tokens** — Every API request from the frontend sends a Clerk-issued Bearer token; the backend verifies it using `@clerk/express`
+- **Subscription Plans** — Clerk's billing integration distinguishes `free` vs `premium` users via the `has({ plan: 'premium' })` check in middleware
+- **Usage Tracking** — Free users have their usage count stored in Clerk's `privateMetadata` (resets on premium upgrade)
+- **User Profile** — Avatar, full name, and plan status are pulled directly from Clerk's `useUser()` hook
+
+---
+
+## 🗄️ Database Schema
+
+```sql
+CREATE TABLE creations (
+  id          SERIAL PRIMARY KEY,
+  user_id     TEXT NOT NULL,
+  prompt      TEXT NOT NULL,
+  content     TEXT NOT NULL,
+  type        TEXT NOT NULL,       -- 'article' | 'blog-title' | 'image' | 'resume-review'
+  publish     BOOLEAN DEFAULT FALSE,
+  likes       TEXT[] DEFAULT '{}',
+  created_at  TIMESTAMP DEFAULT NOW()
+);
 ```
-🏃‍♂️ Run Locally
-# Clone the repository
-git clone https://github.com/anirbandas-01/AI-SaaS-App.git
-cd AI-SaaS-App
 
-# Install server dependencies
-cd server
+---
+
+## 📁 Project Structure
+
+```
+quickai/
+├── client/                   # React frontend (Vite)
+│   ├── src/
+│   │   ├── assets/           # Images, icons, static data
+│   │   ├── components/       # Reusable UI components
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── Hero.jsx
+│   │   │   ├── AiTools.jsx
+│   │   │   ├── Plan.jsx
+│   │   │   ├── Testimonial.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── CreationItem.jsx
+│   │   ├── pages/            # Route-level page components
+│   │   │   ├── Home.jsx
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── WriteArticle.jsx
+│   │   │   ├── BlogTitles.jsx
+│   │   │   ├── GenerateImages.jsx
+│   │   │   ├── RemoveBackground.jsx
+│   │   │   ├── RemoveObject.jsx
+│   │   │   ├── ReviewResume.jsx
+│   │   │   └── Community.jsx
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   └── .env
+│
+└── server/                   # Express backend
+    ├── config/
+    │   ├── db.js             # Neon PostgreSQL connection
+    │   ├── cloudinary.js     # Cloudinary config
+    │   └── multer.js         # File upload config
+    ├── controllers/
+    │   ├── aiController.js   # All AI feature logic
+    │   └── userController.js # User data & community logic
+    ├── middlewares/
+    │   └── auth.js           # Clerk auth + plan check middleware
+    ├── routes/
+    │   ├── aiRoutes.js
+    │   └── userRoutes.js
+    └── server.js
+```
+
+---
+
+## ⚙️ Environment Variables
+
+### Client (`client/.env`)
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_BASE_URL=http://localhost:8000
+```
+
+### Server (`server/.env`)
+```env
+DATABASE_URL=your_neon_postgres_url
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+GEMINI_API_KEY=your_gemini_api_key
+CLIPDROP_API_KEY=your_clipdrop_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+```
+
+---
+
+## 🏃 Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/quickai.git
+cd quickai
+```
+
+### 2. Install dependencies
+```bash
+# Frontend
+cd client
 npm install
 
-# Install client dependencies
-cd ../client
-npm install
-
-# Start backend
+# Backend
 cd ../server
+npm install
+```
+
+### 3. Set up environment variables
+Copy the `.env` examples above and fill in your API keys.
+
+### 4. Run the development servers
+
+```bash
+# Backend (from /server)
 npm run dev
 
-# Start frontend
-cd ../client
+# Frontend (from /client)
 npm run dev
+```
 
-💡 Usage
-1.Sign up / log in
-2.Choose a subscription plan
-3.Access AI tools: 🖼️ image editing, 🧠 text generation, etc.
-4.View results instantly
-5.Manage account, subscription, and history
+Frontend runs at `http://localhost:5173`  
+Backend runs at `http://localhost:8000`
 
-☁️ Deployment
-1.Backend: Render
-2.Frontend: Vercel
-3.Database: PostgreSQL (Neon)
+---
 
-🛣️ Roadmap
- 1.Add more AI models (Gemini, Claude, SDXL)
- 2.Team/multi-user support
- 3.Analytics & usage dashboard
- 4.Dark/light mode toggle
- 5.Performance optimization & caching
- 
-🤝 Contributing
-1.Fork the repo
-2.Create a feature branch (git checkout -b feature/YourFeature)
-3.Commit changes (git commit -m "Add feature")
-4.Push branch (git push origin feature/YourFeature)
-5.Open a Pull Request
-<h3 align="center">✨ Built with ❤️ by <a href="https://github.com/anirbandas-01">Anirban Das</a> ✨</h3>
+## 📸 Usage Plan Limits
+
+| Feature | Free Plan | Premium Plan |
+|---|---|---|
+| Write Article | ✅ Up to 10 uses | ✅ Unlimited |
+| Blog Titles | ✅ Up to 10 uses | ✅ Unlimited |
+| Generate Images | ❌ | ✅ |
+| Remove Background | ❌ | ✅ |
+| Remove Object | ❌ | ✅ |
+| Review Resume | ❌ | ✅ |
+| Community | ✅ | ✅ |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgements
+
+- [Clerk](https://clerk.com) — Authentication & billing
+- [Google Gemini](https://ai.google.dev) — AI text generation
+- [Clipdrop](https://clipdrop.co) — Image generation
+- [Cloudinary](https://cloudinary.com) — Image processing & storage
+- [Neon](https://neon.tech) — Serverless PostgreSQL
